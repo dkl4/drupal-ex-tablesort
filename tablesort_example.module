@@ -3,6 +3,12 @@
  * @file
  * This is an example describing how a module can display data in a sortable table
  *
+ * In the current Drupal 7 core source, there appear to be three Extenders :
+ *
+ * includes/tablesort.inc:15:class TableSort extends SelectQueryExtender {
+ * includes/pager.inc:15:class PagerDefault extends SelectQueryExtender {
+ * modules/search/search.extender.inc:27:class SearchQuery extends SelectQueryExtender {
+ *
  * See:
  * @link http://drupal.org/node/508796 Extenders @endlink
  * @link http://drupal.org/developing/api/database Database API @endlink
@@ -44,6 +50,51 @@ function tablesort_example_menu() {
  *   A render array set for theming by theme_table().
  */
 function tablesort_example_page() {
-  $build = 'Hello from tablesort_example_page callback';
+  // We are going to output the results in a table with a nice header.
+  $header = array(
+    // The header gives the table the information it needs in order to make
+    // the query calls for ordering. TableSort uses the field information
+    // to know what database column to sort by.
+    array('data' => t('Numbers'), 'field' => 't.numbers'),
+    array('data' => t('Letters'), 'field' => 't.alpha'),
+    array('data' => t('Mixture'), 'field' => 't.random'),
+  );
+
+  $query = db_select('tablesort_example', 't')
+    ->extend('TableSort'); // Using the TableSort Extender is what tells the
+                           // the query object that we are sorting.
+  $query->fields('t');
+
+  $result = $query
+    ->orderByHeader($header) // Don't forget to tell the query object how to
+                             // find the header information.
+    ->execute();
+
+  $rows = array();
+  foreach ($result as $row) {
+    // normally we would add some nice formatting to our rows
+    // but for our purpose we are simply going to add our row
+    // to the array.
+    $rows[] = array('data' => (array) $row);
+  }
+
+  // This is a little different from theme('table',) from DBTNG examples.
+  // From DBTNG examples :
+  //   $output .= theme('table', array('header' => $header, 'rows' => $rows));
+
+  // This gives three sortable columns, but in FireFox and Chrome it looks like
+  // only the first column is sortable -- it's the only one with triangles.
+  // Click on other column headers to have triangle appear.
+
+  // build the table for the nice output.
+  $build['tablesort_table'] = array(
+    '#theme'  => 'table',
+    '#header' => $header,
+    '#rows'   => $rows,
+  );
+
+  // Doesn't seem to be anything "magic" about array key of 'tablesort_table'
+  // It can be given any key and it still shows up properly.
+  
   return $build;
 }
