@@ -1,0 +1,9 @@
+<?php
+/**
+ * @file
+ * This is an example describing how a module can display data in a sortable table
+ *
+ * See:
+ * @link http://drupal.org/node/508796 Extenders @endlink
+ * @link http://drupal.org/developing/api/database Database API @endlink
+ */
