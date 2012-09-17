@@ -23,3 +23,27 @@ function tablesort_example_help($path, $arg) {
       return t('This is simple help text for the table sort example');
   }
 }
+
+/**
+ * Implements hook_menu().
+ */
+function tablesort_example_menu() {
+  $items['examples/tablesort_example'] = array(
+    'title'           => 'TableSort example',
+    'description'     => 'Show a page with a sortable table',
+    'page callback'   => 'tablesort_example_page',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
+ * Build the table render array.
+ *
+ * @return
+ *   A render array set for theming by theme_table().
+ */
+function tablesort_example_page() {
+  $build = 'Hello from tablesort_example_page callback';
+  return $build;
+}
