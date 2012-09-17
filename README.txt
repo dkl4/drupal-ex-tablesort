@@ -2,7 +2,7 @@
 
 From Drupal 7 examples at http://drupal.org/project/examples
 
-This is the page_example.
+This is the tablesort_example.
 
 This offers two potential improvements :
 
