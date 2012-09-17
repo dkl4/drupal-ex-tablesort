@@ -7,3 +7,19 @@
  * @link http://drupal.org/node/508796 Extenders @endlink
  * @link http://drupal.org/developing/api/database Database API @endlink
  */
+
+
+/**
+ * Implements hook_help().
+ *
+ * Show a bit of information about this module on the example page
+ */
+function tablesort_example_help($path, $arg) {
+  switch ($path) {
+    case 'examples/tablesort_example':
+      return '<p>' . t('The layout here is a themed as a table that is sortable by clicking the header name.') . '</p>';
+    case 'admin/help#tablesort_example':
+      // This is also viewable from a 'Help' link on the Module page
+      return t('This is simple help text for the table sort example');
+  }
+}
